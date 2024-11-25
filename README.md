@@ -8,7 +8,7 @@ I've been fascinated by [tacit programming](https://en.wikipedia.org/wiki/Tacit_
 I'm nowhere near there yet, though. It barely works!
 
 ## How to use
-Oh, you actually want to try it? Tacitus is written in OCaml and is built with the package manager [opam](https://opam.ocaml.org/) and [dune](https://dune.build/). Right now, what little that does work is in the command line interpreter. From the top-level directory, run the following command to build the interpreter:
+Oh, you actually want to try it? Tacitus is written in OCaml, a superb language for implementing languages. It's built with the package manager [opam](https://opam.ocaml.org/) and [dune](https://dune.build/), and relies on [`ocamllex`](https://dev.realworldocaml.org/parsing-with-ocamllex-and-menhir.html) for lexing and [`menhir`](https://gallium.inria.fr/~fpottier/menhir/) for parsing. Right now, what little that does work is in the command line interpreter. From the top-level directory, run the following command to build the interpreter:
 
 ```
 $ dune utop src
