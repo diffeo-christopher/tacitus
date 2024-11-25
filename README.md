@@ -28,3 +28,5 @@ This should give you
 ─( 00:58:54 )─< command 1 >──────────────────────────────────────────────────────────────────────────────────────────{ counter: 0 }─
 utop #
 ```
+
+This is all very much a J-inspired language. The term `[+/ % #]` 
