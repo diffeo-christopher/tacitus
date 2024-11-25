@@ -37,7 +37,7 @@ So far this seems like a simple Lisp-esque applicative order for execution. But 
 
 ```
 utop # Interp.Main.tacitus "[+/ % #] 1 2 3 4 5";;
-- : Interp.Ast.expr = Interp.Ast.LiteralNoun (Interp.Ast.IArray [3])```
+- : Interp.Ast.expr = Interp.Ast.LiteralNoun (Interp.Ast.IArray [3])
 ```
 How does this work? Well, first let's look at the individual verbs in this expression. `#` means "Tally" and gives you the length of an array. `+` means "Add" as you may guess, but we have `+/`. That `/` is an adverb that means "(functional language) Reduce". so that `+/ 1 2 3 --> 1 + 2 + 3 = 6`. So `+/` means "Sum".
 
