@@ -1,0 +1,13 @@
+(ocamllex lexer)
+
+(library
+ (name interp)
+(flags
+  (:standard -w -39))
+ (preprocess
+  (pps ppx_deriving_protobuf bisect_ppx --conditional))
+)
+
+(menhir
+ (modules parser)
+)
