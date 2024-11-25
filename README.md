@@ -8,25 +8,39 @@ I've been fascinated by [tacit programming](https://en.wikipedia.org/wiki/Tacit_
 I'm nowhere near there yet, though. It barely works!
 
 ## How to use
-Oh, you actually want to try it? Tacitus is written in OCaml and is built with the package manager [opam](https://opam.ocaml.org/) and [dune](https://dune.build/). Right now, what little that does work is in the command line interpreter. From the top-level directory:
+Oh, you actually want to try it? Tacitus is written in OCaml and is built with the package manager [opam](https://opam.ocaml.org/) and [dune](https://dune.build/). Right now, what little that does work is in the command line interpreter. From the top-level directory, run the following command to build the interpreter:
 
 ```
 $ dune utop src
-──────────────────────────────────┬─────────────────────────────────────────────────────────────┬───────────────────────────────────
-                                  │ Welcome to utop version 2.13.1 (using OCaml version 5.1.1)! │
-                                  └─────────────────────────────────────────────────────────────┘
+```
+At this point, you need to understand a little bit about J.  It's an unusual computer language in that it explictly names its keywords "nouns", which includes things like arrays, and "verbs", serving as functions and transformations on those arrays. Then you have "adverbs" which modify those verbs, analogous to higher-order functions. Keep in mind that this is only the tip of the iceberg. If this gets you a [little interested in APL languages](https://news.ycombinator.com/item?id=22831931), I'll be satisfied. Imagine a programmable mathematical notation!
 
-Type #utop_help for help about using utop.
+Verbs can be _monadic_ (taking one argument) or _dyadic_ (taking two). As an example, take `%`. In a monadic context, it's the "Reciprocal" verb. So `% 2.0 <--> 0.5`:
 
-─( 00:58:54 )─< command 0 >──────────────────────────────────────────────────────────────────────────────────────────{ counter: 0 }─
+```
+utop # Interp.Main.tacitus "% 2.0";;
+- : Interp.Ast.expr = Interp.Ast.LiteralNoun (Interp.Ast.FArray [0.5])
+```
+
+However, in a _dyadic_ context, it can mean "Divison":
+```
+utop # Interp.Main.tacitus "7.0 % 2.0";;
+- : Interp.Ast.expr = Interp.Ast.LiteralNoun (Interp.Ast.FArray [3.5])
+```
+Verbs can work on space-separated lists of values too:
+```
+utop # Interp.Main.tacitus "% 1 2 3";;
+- : Interp.Ast.expr =
+Interp.Ast.LiteralNoun (Interp.Ast.FArray [1.; 0.5; 0.333333333333333315])
+```
+So far this seems like a simple Lisp-esque applicative order for execution. But J supports a wonderful concept called _forks_ which encourage the tacit "point-free" style. For example, here's how to compute the average of a list of numbers (the "Hello, world" of APLs):
+
+```
 utop # Interp.Main.tacitus "[+/ % #] 1 2 3 4 5";;
+- : Interp.Ast.expr = Interp.Ast.LiteralNoun (Interp.Ast.IArray [3])```
 ```
+How does this work? Well, first let's look at the individual verbs in this expression. `#` means "Tally" and gives you the length of an array. `+` means "Add" as you may guess, but we have `+/`. That `/` is an adverb that means "(functional language) Reduce". so that `+/ 1 2 3 --> 1 + 2 + 3 = 6`. So `+/` means "Sum".
 
-This should give you
-```
-- : Interp.Ast.expr = Interp.Ast.LiteralNoun (Interp.Ast.IArray [3])
-─( 00:58:54 )─< command 1 >──────────────────────────────────────────────────────────────────────────────────────────{ counter: 0 }─
-utop #
-```
+Back to the fork. When you see three verbs chained together like `V1 V2 V3 N` applied to some noun `N`, that really means `(V1 N) V2 (V3 N)`. `V2` has to be a dyadic verb. So in words, `+/ % #` means "take the sum of a list, and take the length of a list, and divide the sum by the length to get the average".
 
-This is all very much a J-inspired language. The term `[+/ % #]` 
+I haven't made any progress on the "optimization" part of this. Imagine that the verbs here were layers in a neural network, and that we could build optimizations or validations into the language itself! Perhaps someday.
