@@ -41,6 +41,6 @@ utop # Interp.Main.tacitus "[+/ % #] 1 2 3 4 5";;
 ```
 How does this work? Well, first let's look at the individual verbs in this expression. `#` means "Tally" and gives you the length of an array. `+` means "Add" as you may guess, but we have `+/`. That `/` is an adverb that means "(functional language) Reduce". so that `+/ 1 2 3 --> 1 + 2 + 3 = 6`. So `+/` means "Sum".
 
-Back to the fork. When you see three verbs chained together like `V1 V2 V3 N` applied to some noun `N`, that really means `(V1 N) V2 (V3 N)`. `V2` has to be a dyadic verb. So in words, `+/ % #` means "take the sum of a list, and take the length of a list, and divide the sum by the length to get the average".
+Back to the fork. When you see three verbs chained together like `V1 V2 V3 N` applied to some noun `N`, that really means `(V1 N) V2 (V3 N)`. `V2` has to be a dyadic verb. So in words, `+/ % #` means "take the sum of a list, and take the length of a list, and divide the sum by the length to get the average". This is a _monadic fork_. And there dyadic forks, and verb trains of higher valence.
 
 I haven't made any progress on the "optimization" part of this. Imagine that the verbs here were layers in a neural network, and that we could build optimizations or validations into the language itself! Perhaps someday.
